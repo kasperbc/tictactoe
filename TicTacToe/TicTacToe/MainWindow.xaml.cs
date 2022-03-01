@@ -25,11 +25,27 @@ namespace TicTacToe
             InitializeComponent();
         }
 
+        private int clickCount = 0;
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var button = (Button)sender;
 
-            button.Content = "X";
+            if (clickCount % 2 == 0)
+            {
+                button.Content = "X";
+            }
+            else
+            {
+                button.Content = "O";
+            }
+
+            clickCount++;
+        }
+
+        private void Quit(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

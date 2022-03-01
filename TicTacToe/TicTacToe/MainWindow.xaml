@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TicTacToe"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="500">
+        Title="MainWindow" Height="581" Width="500">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -28,5 +29,10 @@
         <Button Grid.Column="0" Grid.Row="2" FontSize="100" Click="Button_Click"/>
         <Button Grid.Column="1" Grid.Row="2" FontSize="100" Click="Button_Click"/>
         <Button Grid.Column="2" Grid.Row="2" FontSize="100" Click="Button_Click"/>
+        
+        <!--Funkitonapit-->
+        <Button Grid.Column="0" Grid.Row="3" FontSize="25" Content="Quit" Background="pink" Click="Quit"/>
+        <Button Grid.Column="1" Grid.Row="3" FontSize="25" Background="LightGreen"/>
+        <Button Grid.Column="2" Grid.Row="3" FontSize="25" Content="Reset" Background="pink" Click="Reset"/>
     </Grid>
 </Window>
