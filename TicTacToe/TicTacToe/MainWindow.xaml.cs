@@ -24,5 +24,12 @@ namespace TicTacToe
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var button = (Button)sender;
+
+            button.Content = "X";
+        }
     }
 }
