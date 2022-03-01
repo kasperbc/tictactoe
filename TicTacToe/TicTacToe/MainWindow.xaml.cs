@@ -47,5 +47,10 @@ namespace TicTacToe
         {
             Close();
         }
+
+        private void Reset(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }
