@@ -44,6 +44,7 @@ namespace TicTacToe
             else
             {
                 button.Content = "O";
+                button.Foreground = Brushes.Red;
             }
 
             // Lisää nappien painallusmäärää
