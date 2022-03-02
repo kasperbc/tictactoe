@@ -35,6 +35,7 @@ namespace TicTacToe
             if (clickCount % 2 == 0)
             {
                 button.Content = "X";
+                button.Foreground = Brushes.Black;
             }
             else
             {
@@ -67,9 +68,10 @@ namespace TicTacToe
                 }
             }
 
+            // Tarkista jos kukaan on voittanut
             int winner = CheckForWinner(grid);
 
-            // Kirjoita voittaja tulosalueeseen
+            // Jos peli päättynyt, kirjoita tulos pelialueeseen
             if (clickCount == 9 || winner != 0)
             {
                 TextBlock? resultsText = FindName("Results") as TextBlock;
@@ -78,13 +80,22 @@ namespace TicTacToe
                 {
                     // Rasti voittaa
                     if (winner == 1)
-                        resultsText.Text = "Results: X wins";
+                    {
+                        resultsText.Text = "X wins";
+                        resultsText.Foreground = Brushes.Black;
+                    }
                     // Nolla voittaa
                     else if (winner == 2)
-                        resultsText.Text = "Results: O wins";
+                    {
+                        resultsText.Text = "O wins";
+                        resultsText.Foreground = Brushes.DarkRed;
+                    }
                     // Tasapeli
                     else if (clickCount == 9)
-                        resultsText.Text = "Results: Stalemate";
+                    {
+                        resultsText.Text = "Stalemate";
+                        resultsText.Foreground = Brushes.DarkGray;
+                    }
 
                     // Ottaa kaikki ristinolla-napit pois käytöstä
                     TogglePlayButtons(false);
@@ -101,6 +112,40 @@ namespace TicTacToe
         {
             // Sulkee applikaation
             Close();
+        }
+
+        /// <summary>
+        /// Alustaa pelialueen ja aloittaa uuden pelin
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Reset(object sender, RoutedEventArgs e)
+        {
+            // Alusta nappien painausmäärä
+            clickCount = 0;
+
+            // Aseta kaikki napit painettavaksi
+            TogglePlayButtons(true);
+
+            // Tyhjennä kaikkien nappien teksti
+            for (int i = 0; i < 9; i++)
+            {
+                Button? b = FindName("Button" + (i + 1)) as Button;
+
+                if (b is Button)
+                {
+                    b.Content = null;
+                }
+            }
+
+            // Alusta tulostekstin teksti
+            TextBlock? resultsText = FindName("Results") as TextBlock;
+
+            if (resultsText is TextBlock)
+            {
+                resultsText.Text = "Result";
+                resultsText.Foreground = Brushes.Black;
+            }
         }
 
         /// <summary>
