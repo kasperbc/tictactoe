@@ -35,5 +35,8 @@
         <TextBlock Grid.Column="1" Grid.Row="3" Background="LightGreen" Text="Result" FontSize="25" TextAlignment="Center"
                    Padding="22.5" Name="Results" TextWrapping="Wrap"/>
         <Button Grid.Column="2" Grid.Row="3" FontSize="25" Content="Reset" Background="pink" Click="Reset"/>
+        
+        <!--Viiva-->
+        <Line Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Stroke="Black" StrokeThickness="4" Name="WLine" ClipToBounds="False"/>
     </Grid>
 </Window>

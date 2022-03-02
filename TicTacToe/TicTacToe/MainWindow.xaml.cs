@@ -93,8 +93,8 @@ namespace TicTacToe
                     // Tasapeli
                     else if (clickCount == 9)
                     {
-                        resultsText.Text = "Stalemate";
-                        resultsText.Foreground = Brushes.DarkGray;
+                        resultsText.Text = "Tie";
+                        resultsText.Foreground = Brushes.DarkSlateGray;
                     }
 
                     // Ottaa kaikki ristinolla-napit pois käytöstä
@@ -140,11 +140,20 @@ namespace TicTacToe
 
             // Alusta tulostekstin teksti
             TextBlock? resultsText = FindName("Results") as TextBlock;
-
             if (resultsText is TextBlock)
             {
                 resultsText.Text = "Result";
                 resultsText.Foreground = Brushes.Black;
+            }
+
+            // Alusta viiva
+            Line? line = FindName("WLine") as Line;
+            if (line is Line)
+            {
+                line.X1 = 0;
+                line.X2 = 0;
+                line.Y1 = 0;
+                line.Y2 = 0;
             }
         }
 
@@ -176,6 +185,7 @@ namespace TicTacToe
                         }
                         else
                         {
+                            DrawWinnerLine(row * 3, (row * 3) + 2);
                             return winner;
                         }
                     }
@@ -202,6 +212,7 @@ namespace TicTacToe
                         }
                         else
                         {
+                            DrawWinnerLine(col, col + 6);
                             return winner;
                         }
                     }
@@ -212,12 +223,14 @@ namespace TicTacToe
             int result = CheckCustom(grid, new int[3] { 0, 4, 8 });
             if (result != 0)
             {
+                DrawWinnerLine(0, 8);
                 return result;
             }
 
             result = CheckCustom(grid, new int[3] { 2, 4, 6 });
             if (result != 0)
             {
+                DrawWinnerLine(2, 6);
                 return result;
             }
 
@@ -274,6 +287,41 @@ namespace TicTacToe
                 {
                     b.IsHitTestVisible = toggle;
                 }
+            }
+        }
+
+        private void DrawWinnerLine(int from, int to)
+        {
+            // Koordinaattiarvot
+            int[][] coordinateValues = new int[3][]
+            {
+                new int[] {83, 79},
+                new int[] {245, 241},
+                new int[] {415, 400}
+            };
+
+            // Grid-koordinaatit
+            int[][] gridXY = new int[9][]
+            {
+                new int[] { coordinateValues[0][0], coordinateValues[0][1] },
+                new int[] { coordinateValues[1][0], coordinateValues[0][1] },
+                new int[] { coordinateValues[2][0], coordinateValues[0][1] },
+                new int[] { coordinateValues[0][0], coordinateValues[1][1] },
+                new int[] { coordinateValues[1][0], coordinateValues[1][1] },
+                new int[] { coordinateValues[2][0], coordinateValues[1][1] },
+                new int[] { coordinateValues[0][0], coordinateValues[2][1] },
+                new int[] { coordinateValues[1][0], coordinateValues[2][1] },
+                new int[] { coordinateValues[2][0], coordinateValues[2][1] }
+            };
+
+            // Aseta viiva
+            Line? l = FindName("WLine") as Line;
+            if (l is Line)
+            {
+                l.X1 = gridXY[from][0];
+                l.Y1 = gridXY[from][1];
+                l.X2 = gridXY[to][0];
+                l.Y2 = gridXY[to][1];
             }
         }
     }
