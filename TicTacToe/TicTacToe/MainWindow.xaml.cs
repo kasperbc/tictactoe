@@ -46,11 +46,190 @@ namespace TicTacToe
 
             // Lisää nappien painallusmäärää
             clickCount++;
+
+            // Tarkistaa, onko peli päättynyt
+            // Ota jokainen nappi
+            string[] grid = new string[9];
+            for (int i = 0; i < 9; i++)
+            {
+                Button? b = FindName("Button" + (i + 1)) as Button;
+
+                if (b is Button)
+                {
+                    if (b.Content == null)
+                    {
+                        grid[i] = "N";
+                    }
+                    else
+                    {
+                        grid[i] = b.Content.ToString();
+                    }
+                }
+            }
+
+            int winner = CheckForWinner(grid);
+
+            // Kirjoita voittaja tulosalueeseen
+            if (clickCount == 9 || winner != 0)
+            {
+                TextBlock? resultsText = FindName("Results") as TextBlock;
+
+                if (resultsText is TextBlock)
+                {
+                    // Rasti voittaa
+                    if (winner == 1)
+                        resultsText.Text = "Results: X wins";
+                    // Nolla voittaa
+                    else if (winner == 2)
+                        resultsText.Text = "Results: O wins";
+                    // Tasapeli
+                    else if (clickCount == 9)
+                        resultsText.Text = "Results: Stalemate";
+
+                    // Ottaa kaikki ristinolla-napit pois käytöstä
+                    TogglePlayButtons(false);
+                }
+            }
         }
 
+        /// <summary>
+        /// Sulje applikaatio.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Quit(object sender, RoutedEventArgs e)
         {
+            // Sulkee applikaation
             Close();
+        }
+
+        /// <summary>
+        /// Tarkistaa jos kukaan on voittanut pelin.
+        /// Palauttaa 0 jos ei voittajaa, 1 jos risti on voittanut ja 2 jos nolla on voittanut
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        private int CheckForWinner(string[] grid)
+        {
+            // Tarkista rivit
+            for (int row = 0; row < 3; row++)
+            {
+                string checker = grid[0 + (row * 3)];
+
+                for (int col = 0; col < 3; col++)
+                {
+                    if (!checker.Equals(grid[col + (row * 3)]))
+                    {
+                        break;
+                    }
+                    else if (col == 2)
+                    {
+                        int winner = WinnerToInteger(checker);
+                        if (winner == 0)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            return winner;
+                        }
+                    }
+                }
+            }
+
+            // Tarkista sarakkeet
+            for (int col = 0; col < 3; col++)
+            {
+                string checker = grid[0 + col];
+
+                for (int row = 0; row < 3; row++)
+                {
+                    if (!checker.Equals(grid[col + (row * 3)]))
+                    {
+                        break;
+                    }
+                    else if (row == 2)
+                    {
+                        int winner = WinnerToInteger(checker);
+                        if (winner == 0)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            return winner;
+                        }
+                    }
+                }
+            }
+
+            // Tarkista diagonaaliset
+            int result = CheckCustom(grid, new int[3] { 0, 4, 8 });
+            if (result != 0)
+            {
+                return result;
+            }
+
+            result = CheckCustom(grid, new int[3] { 2, 4, 6 });
+            if (result != 0)
+            {
+                return result;
+            }
+
+            return 0;
+        }
+
+        private int WinnerToInteger(string winner)
+        {
+            if (winner.Equals("N"))
+                return 0;
+            else if (winner.Equals("X"))
+                return 1;
+            else if (winner.Equals("O"))
+                return 2;
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Tarkistaa jos kukaan on voittanut annetuissa kohdissa
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="checkedTiles"></param>
+        /// <returns></returns>
+        private int CheckCustom(string[] grid, int[] checkedTiles)
+        {
+            for (int i = 0; i < checkedTiles.Length; i++)
+            {
+                string checker = grid[checkedTiles[0]];
+
+                if (!checker.Equals(grid[checkedTiles[i]]))
+                {
+                    return 0;
+                }
+                else if (i == checkedTiles.Length - 1)
+                {
+                    return WinnerToInteger(checker);
+                }
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Muuttaa kaikkien ristinolla-nappien painamismahdollisuuden
+        /// </summary>
+        private void TogglePlayButtons(bool toggle)
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                Button? b = FindName("Button" + (i + 1)) as Button;
+
+                if (b is Button)
+                {
+                    b.IsHitTestVisible = toggle;
+                }
+            }
         }
     }
 }
