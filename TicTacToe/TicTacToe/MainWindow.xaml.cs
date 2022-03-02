@@ -31,45 +31,53 @@ namespace TicTacToe
         {
             var button = (Button)sender;
 
-            // Muuta nappi X tai O vuorotellen
-            if (clickCount % 2 == 0)
-            {
-                button.Content = "X";
-                button.Foreground = Brushes.Black;
-            }
-            else
-            {
-                button.Content = "O";
-                button.Foreground = Brushes.Red;
-            }
+            MakeMove(button.Name);
+        }
 
-            button.IsHitTestVisible = false;
+        private void MakeMove(int tile)
+        {
+            Button? button = FindName("Button" + (tile + 1)) as Button;
+
+            if (button != null)
+            {
+                // Muuta nappi X tai O vuorotellen
+                if (clickCount % 2 == 0)
+                {
+                    button.Content = "X";
+                    button.Foreground = Brushes.Black;
+                }
+                else
+                {
+                    button.Content = "O";
+                    button.Foreground = Brushes.Red;
+                }
+
+                button.IsHitTestVisible = false;
+            }
 
             // Lisää nappien painallusmäärää
             clickCount++;
 
-            // Tarkistaa, onko peli päättynyt
-            // Ota jokainen nappi
-            string[] grid = new string[9];
-            for (int i = 0; i < 9; i++)
+            CheckForGameEnd();
+        }
+
+        private void MakeMove(string buttonName)
+        {
+            char[] nameCharArray = buttonName.ToCharArray();
+            
+            if (char.IsDigit(nameCharArray[6]))
             {
-                Button? b = FindName("Button" + (i + 1)) as Button;
-
-                if (b is Button)
-                {
-                    if (b.Content == null)
-                    {
-                        grid[i] = "N";
-                    }
-                    else
-                    {
-                        grid[i] = b.Content.ToString();
-                    }
-                }
+                MakeMove(int.Parse(nameCharArray[6].ToString()) - 1);
             }
+        }
 
+        /// <summary>
+        /// Tarkista, onko joku voittanut tai onko tasapeli
+        /// </summary>
+        private void CheckForGameEnd()
+        {
             // Tarkista jos kukaan on voittanut
-            int winner = CheckForWinner(grid);
+            int winner = CheckForWinner();
 
             // Jos peli päättynyt, kirjoita tulos pelialueeseen
             if (clickCount == 9 || winner != 0)
@@ -101,6 +109,41 @@ namespace TicTacToe
                     TogglePlayButtons(false);
                 }
             }
+            // Make random move
+            else if (clickCount % 2 != 0)
+            {
+                Random rng = new Random();
+                bool moveSuccesful = false;
+                while (!moveSuccesful)
+                {
+                    moveSuccesful = TryMakeMove(rng.Next(8), true);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tarkistaa jos liikkeen pystyy annetussa ruudussa. Palauttaa true jos liike mahdollinen ja false jos ei.
+        /// </summary>
+        /// <param name="tile"></param>
+        /// <returns></returns>
+        private bool TryMakeMove(int tile, bool makeMoveIfPossible)
+        {
+            string[] grid = GetButtonGrid();
+
+            if (grid[tile].Equals("N"))
+            {
+                if (makeMoveIfPossible)
+                {
+                    MakeMove(tile);
+                }
+                return true;
+            }
+
+            return false;
+        }
+        private bool TryMakeMove(int tile)
+        {
+            return TryMakeMove(tile, false);
         }
 
         /// <summary>
@@ -163,8 +206,10 @@ namespace TicTacToe
         /// </summary>
         /// <param name="grid"></param>
         /// <returns></returns>
-        private int CheckForWinner(string[] grid)
+        private int CheckForWinner()
         {
+            string[] grid = GetButtonGrid();
+
             // Tarkista rivit
             for (int row = 0; row < 3; row++)
             {
@@ -323,6 +368,29 @@ namespace TicTacToe
                 l.X2 = gridXY[to][0];
                 l.Y2 = gridXY[to][1];
             }
+        }
+
+        private string[] GetButtonGrid()
+        {
+            string[] grid = new string[9];
+            for (int i = 0; i < 9; i++)
+            {
+                Button? b = FindName("Button" + (i + 1)) as Button;
+
+                if (b is Button)
+                {
+                    if (b.Content == null)
+                    {
+                        grid[i] = "N";
+                    }
+                    else
+                    {
+                        grid[i] = b.Content.ToString();
+                    }
+                }
+            }
+
+            return grid;
         }
     }
 }
