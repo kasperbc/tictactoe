@@ -31,6 +31,12 @@ namespace TicTacToe
         {
             var button = (Button)sender;
 
+            if (button.Content != null)
+            {
+                return;
+            }
+
+            // Muuta nappi X tai O vuorotellen
             if (clickCount % 2 == 0)
             {
                 button.Content = "X";
@@ -40,6 +46,7 @@ namespace TicTacToe
                 button.Content = "O";
             }
 
+            // Lisää nappien painallusmäärää
             clickCount++;
         }
 

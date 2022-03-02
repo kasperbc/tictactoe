@@ -32,6 +32,7 @@
 
         <!--Funkitonapit-->
         <Button Grid.Column="0" Grid.Row="3" FontSize="25" Content="Quit" Background="pink" Click="Quit"/>
-        <TextBlock Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Background="LightGreen" Text="Result:" FontSize="25" TextAlignment="Center" Padding="20"/>
+        <TextBlock Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Background="LightGreen" Text="Result:" FontSize="25" TextAlignment="Center" Padding="20"
+                   Name="Results"/>
     </Grid>
 </Window>
