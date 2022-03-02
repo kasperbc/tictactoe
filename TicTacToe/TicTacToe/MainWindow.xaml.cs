@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,6 @@ namespace TicTacToe
         }
 
         private int clickCount = 0;
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var button = (Button)sender;
@@ -46,11 +46,6 @@ namespace TicTacToe
         private void Quit(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private void Reset(object sender, RoutedEventArgs e)
-        {
-            
         }
     }
 }
